@@ -1,77 +1,60 @@
-// from data.js
+// taking from demo code and modifying class activity code
+
 var tableData = data;
-//var table = document.getElementById("ufo-table");
+
+// define the key objects to interact with
+
+var resetbtn = d3.select("#reset-btn");
+var filterbtn = d3.select("#filter-btn");
+var date_time = d3.select("#datetime");
+var tbody = d3.select("tbody");
+
+//specify the column headers
+var columns = ["date", "city", "state", "country", "shape", "duration", "comments"]
 
 
+// getting the data into the table which failed on prior coding
 
-    var tbl = document.getElementById('ufo-table'), // table reference
-        row = tbl.insertRow(tbl.rows.length),      // append table row
-        i;
-    // insert table cells to the new row
-    for (i = 0; i < tbl.rows[0].cells.length; i++) {
-        createCell(row.insertCell(i), i, 'row');
-    }
-
-
-//var table = document.getElementById("ufo-table");
-//var row = table.insertRow(0);
-//var cell1 = row.insertCell(0);
-//var cell2 = row.insertCell(1);
-//cell1.innerHTML = "NEW CELL1";
-//cell2.innerHTML = "NEW CELL2";
-
-//function myFunction() {
-//    var table = document.getElementById("myTable");
-//    var row = table.insertRow(0);
-//    var cell1 = row.insertCell(0);
-//    var cell2 = row.insertCell(1);
-//    cell1.innerHTML = "NEW CELL1";
-//    cell2.innerHTML = "NEW CELL2";
-//  }
-
-data.forEach(function(tableData) {
-       console.log(tableData);
-});
-
-data.forEach(function(tableData) {
-       console.log(tableData);
+var tabulate = (data) => data.forEach(function(info){
     var row = tbody.append("tr");
+
+    Object.entries(info).forEach(function([key, value]){
+        var cell = row.append("td");
+
+        cell.text(value);
+    });
 });
-    
-data.forEach(function(tableData) {
-       console.log(tableData);
-       var row = tbody.append("tr");
-    
-       Object.entries(tableData).forEach(function([key, value]) {
-         console.log(key, value);
-       });
-     });
-    
 
- data.forEach(function(tableData) {
-   console.log(tableData);
-   var row = tbody.append("tr");
-
-   Object.entries(tableData).forEach(function([key, value]) {
-     console.log(key, value);
-     // Append a cell to the row for each value
-     // in the weather report object
-     var cell = row.append("td");
-   });
- });
+tabulate(tableData);
 
 
- data.forEach(function(tableData) {
-       console.log(tableData);
-       var row = tbody.append("tr");
-       Object.entries(tableData).forEach(function([key, value]) {
-         console.log(key, value);
-         // Append a cell to the row for each value
-         // in the weather report object
-         var cell = row.append("td");
-         cell.text(value);
-       });
-     });
-    
 
-// YOUR CODE HERE!
+// filter the data here
+
+filterbtn.on("click", function () {
+
+    d3.event.preventDefault();
+
+    var inputValue = date_time.property("value");
+
+    var filteredData = tableData.filter(date => date.datetime == inputValue);
+    console.log(filteredData)
+
+    tbody.html("");
+
+    tabulate(filteredData);
+
+});
+
+
+
+// reset data filtering
+
+resetbtn.on("click", function () {
+
+  tbody.html("");
+
+  tabulate(tableData);
+
+});
+
